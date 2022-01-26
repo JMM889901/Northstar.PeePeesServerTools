@@ -1,0 +1,60 @@
+global function Autokick_Init
+void function Autokick_Init() {
+	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "AutoKick", ["#SETTING_DISABLED", "#SETTING_ENABLED"], "0")
+	#if SERVER
+		AddCallback_GameStateEnter( eGameState.Playing, onstart );
+	#endif
+}
+
+
+// Enabled Functions
+	bool function AutoKickEnabled() {
+		return GetCurrentPlaylistVarInt("AutoKick", 0) == 1
+	}
+
+struct{
+	table<entity, int> playerlist = {}
+	table<entity, array<vector> > playerpos = {}
+} file
+#if SERVER
+	void function onstart(){
+		thread cycle()
+        }
+	void function cycle(){
+		while (GetGameState() == eGameState.Playing){
+			foreach ( entity player in GetPlayerArray() ){
+				if (player in file.playerlist){
+					if(player.GetOrigin() == file.playerpos[player][0]){
+						if(player.GetAngles() == file.playerpos[player][1]){
+							file.playerlist[player] = file.playerlist[player] + 1
+							if (file.playerlist[player] >= 120){
+								print(player)
+								ServerCommand("kickid "+ player.GetUID())
+							}
+						}
+						else
+							Movement(player)
+					}
+					else
+						Movement(player)
+
+				}
+				else{
+					file.playerlist[player] <- 1
+					file.playerpos[player] <- [player.GetOrigin(), player.GetAngles()]
+				}
+			}
+			wait 1
+		}
+	}
+	void function Movement(entity player){
+		if (player in file.playerlist){
+			file.playerlist[player] = 0
+			file.playerpos[player] = [player.GetOrigin(), player.GetAngles()]
+		}
+		else{
+			file.playerlist[player] <- 0
+		}
+	}
+
+#endif
