@@ -1,0 +1,30 @@
+global function SkipLobby_Init
+void function SkipLobby_Init() {
+	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "SkipLobby", ["#SETTING_DISABLED", "#SETTING_ENABLED"], "0")
+	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "ReplacementMap", ["mp_forwardbase_kodai", "mp_grave","mp_homestead","mp_thaw","mp_black_water_canal","mp_eden","mp_drydock","mp_crashsite3","mp_complex3","mp_coliseum","mp_angel_city","mp_colony02","mp_relic02","mp_glitch","mp_lf_stacks","mp_lf_meadow","mp_lf_deck","mp_lf_traffic","mp_lf_township","mp_lf_uma","mp_coliseum_column","mp_wargames","mp_rise"], "0")
+	#if SERVER
+	thread skipit()
+	#endif
+}
+
+// Enabled Functions
+	bool function SkipLobbyEnabled() {
+		return GetCurrentPlaylistVarInt("SkipLobby", 0) == 1
+	}
+	string function SelectedMap(){
+		return maplist[GetCurrentPlaylistVarInt("SkipLobby", 0)]
+	}
+array<string> maplist = ["mp_forwardbase_kodai", "mp_grave","mp_homestead","mp_thaw","mp_black_water_canal","mp_eden","mp_drydock","mp_crashsite3","mp_complex3","mp_coliseum","mp_angel_city","mp_colony02","mp_relic02","mp_glitch","mp_lf_stacks","mp_lf_meadow","mp_lf_deck","mp_lf_traffic","mp_lf_township","mp_lf_uma","mp_coliseum_column","mp_wargames","mp_rise"]
+#if SERVER
+	void function skipit(){
+		wait 5.0
+		print("starting")
+		if (SkipLobbyEnabled()){
+			print("enabled")
+			if (GetMapName() == "mp_lobby"){
+				print("changingmap")
+				ServerCommand("map " + SelectedMap())
+			}
+		}
+	}
+#endif
