@@ -1,0 +1,11 @@
+"lang"
+{
+	"Language" "english"
+	"Tokens"
+	{
+		"MODE_SETTING_CATEGORY_SERVERTOOLS" "Server tools"
+		"AutoKick" "Enable Autokick?"
+		"SkipLobby" "Skip Lobby??""
+		"ReplacementMap" "Replacement map"
+	}
+}
