@@ -1,0 +1,34 @@
+{
+	"Name" : "ServerTools",
+	"Description" : "Server Tools",
+	"Version": "0.1.0",
+	"LoadPriority": 1,
+
+	"Scripts": [
+		{
+			"Path": "sh_AutoKick.gnut",
+			"RunOn": "MP",
+			"ClientCallback": {
+				"After": "Autokick_Init"
+			},
+
+			"ServerCallback": {
+				"After": "Autokick_Init"
+			}
+		},
+		{
+			"Path": "sh_SkipPrivateMatchMaybe.gnut",
+			"RunOn": "MP",
+			"ClientCallback": {
+				"After": "SkipLobby_Init"
+			},
+			"ServerCallback": {
+				"After": "SkipLobby_Init"
+			}
+		}
+	],
+
+	"Localisation": [
+		"resource/ServerTools_localisation_%language%.txt"
+	]
+}
