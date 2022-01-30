@@ -3,7 +3,12 @@
 	"Description" : "Server Tools",
 	"Version": "0.1.0",
 	"LoadPriority": 1,
-
+	"ConVars": [
+		{
+			"Name": "kickimmune",
+			"DefaultValue": "example name here" // add names here seperated by ,
+		}
+	],
 	"Scripts": [
 		{
 			"Path": "sh_AutoKick.gnut",
