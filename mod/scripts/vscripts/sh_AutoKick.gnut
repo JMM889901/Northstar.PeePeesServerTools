@@ -6,6 +6,21 @@ void function Autokick_Init() {
 	#endif
 }
 
+struct {
+	array<string> KickImmunity
+	string AutoKickStringLastVal
+} file
+
+void function Antikick()
+{
+	string cvar = GetConVarString( "KickImmune" )
+	if ( file.AutoKickStringLastVal == cvar )
+		return
+	file.KickImmunity = split( cvar, "," )
+	foreach ( string immune in file.KickImmunity )
+		StringReplace( immune, " ", "" )
+
+}//taken from the rcon mod
 
 // Enabled Functions
 	bool function AutoKickEnabled() {
