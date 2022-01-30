@@ -38,6 +38,7 @@ struct{
 	void function cycle(){
 		while (GetGameState() == eGameState.Playing){
 			foreach ( entity player in GetPlayerArray() ){
+				if (!(player.GetPlayerName() in file. KickImmunity)){
 				if (player in file.playerlist){
 					if(player.GetOrigin() == file.playerpos[player][0]){
 						if(player.GetAngles() == file.playerpos[player][1]){
@@ -57,6 +58,7 @@ struct{
 				else{
 					file.playerlist[player] <- 1
 					file.playerpos[player] <- [player.GetOrigin(), player.GetAngles()]
+				}
 				}
 			}
 			wait 1
