@@ -15,3 +15,5 @@ SkipLobby (0 or 1)
 ReplacementMap (Full name of a map such as mp_forwardbase_kodai)
 
 AutoKick (0 or 1) enables a 120 second afk autokick
+
+ReplacementMode
