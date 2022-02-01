@@ -2,6 +2,8 @@ global function SkipLobby_Init
 void function SkipLobby_Init() {
 	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "SkipLobby", ["#SETTING_DISABLED", "#SETTING_ENABLED"], "0")
 	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "ReplacementMap", ["mp_forwardbase_kodai", "mp_grave","mp_homestead","mp_thaw","mp_black_water_canal","mp_eden","mp_drydock","mp_crashsite3","mp_complex3","mp_coliseum","mp_angel_city","mp_colony02","mp_relic02","mp_glitch","mp_lf_stacks","mp_lf_meadow","mp_lf_deck","mp_lf_traffic","mp_lf_township","mp_lf_uma","mp_coliseum_column","mp_wargames","mp_rise"], "mp_forwardbase_kodai")
+	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "ReplacementMode", ["ps","gg","tt","inf","fastball","ctf_comp","hs","cp","lts","ctf","ttdm","turbo_ttdm","attdm","ffa","fra","coliseum","lf","rocket_lf","mfd"], "tdm")
+
 	#if SERVER
 	thread skipit()
 	#endif
@@ -12,9 +14,23 @@ void function SkipLobby_Init() {
 		return GetCurrentPlaylistVarInt("SkipLobby", 0) == 1
 	}
 	string function SelectedMap(){
-		return GetCurrentPlaylistVarString("ReplacementMap", "mp_forwardbase_kodai")
+		string map = GetCurrentPlaylistVarString("ReplacementMap", "mp_forwardbase_kodai")
+		if (maplist.find(map) != -1){
+			return GetCurrentPlaylistVarString("ReplacementMap", "mp_forwardbase_kodai") 
+		}
+			print("uh oh, someone entered a bad mapname")
+			return "mp_forwardbase_kodai"
+	}
+	string function SelectedType(){
+		string map = GetCurrentPlaylistVarString("ReplacementMode", "tdm")
+		if (types.find(map) != -1){
+			return GetCurrentPlaylistVarString("ReplacementMode", "tdm") 
+		}
+			print("uh oh, someone entered a bad gametype")
+			return "tdm"
 	}
 array<string> maplist = ["mp_forwardbase_kodai", "mp_grave","mp_homestead","mp_thaw","mp_black_water_canal","mp_eden","mp_drydock","mp_crashsite3","mp_complex3","mp_coliseum","mp_angel_city","mp_colony02","mp_relic02","mp_glitch","mp_lf_stacks","mp_lf_meadow","mp_lf_deck","mp_lf_traffic","mp_lf_township","mp_lf_uma","mp_coliseum_column","mp_wargames","mp_rise"]
+array<string> types = ["ps","gg","tt","inf","fastball","ctf_comp","hs","cp","lts","ctf","ttdm","turbo_ttdm","attdm","ffa","fra","coliseum","lf","rocket_lf","mfd"]
 #if SERVER
 	void function skipit(){
 		wait 5.0
@@ -23,7 +39,8 @@ array<string> maplist = ["mp_forwardbase_kodai", "mp_grave","mp_homestead","mp_t
 			print("enabled")
 			if (GetMapName() == "mp_lobby"){
 				print("changingmap")
-				ServerCommand("map " + SelectedMap())
+				SetCurrentPlaylist( SelectedType() ) 
+				GameRules_ChangeMap( SelectedMap(), SelectedType() )
 			}
 		}
 	}
