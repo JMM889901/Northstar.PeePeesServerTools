@@ -1,15 +1,11 @@
 global function Autokick_Init
 void function Autokick_Init() {
 	AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "AutoKick", ["#SETTING_DISABLED", "#SETTING_ENABLED"], "0")
+	Antikick()
 	#if SERVER
 		AddCallback_GameStateEnter( eGameState.Playing, onstart );
 	#endif
 }
-
-struct {
-	array<string> KickImmunity
-	string AutoKickStringLastVal
-} file
 
 void function Antikick()
 {
@@ -30,6 +26,8 @@ void function Antikick()
 struct{
 	table<entity, int> playerlist = {}
 	table<entity, array<vector> > playerpos = {}
+	array<string> KickImmunity
+	string AutoKickStringLastVal
 } file
 #if SERVER
 	void function onstart(){
@@ -38,7 +36,7 @@ struct{
 	void function cycle(){
 		while (GetGameState() == eGameState.Playing){
 			foreach ( entity player in GetPlayerArray() ){
-				if (!(player.GetPlayerName() in file. KickImmunity)){
+				if (file.KickImmunity.find(player.GetPlayerName()) == -1){
 				if (player in file.playerlist){
 					if(player.GetOrigin() == file.playerpos[player][0]){
 						if(player.GetAngles() == file.playerpos[player][1]){
