@@ -5,8 +5,8 @@
 	"LoadPriority": 1,
 	"ConVars": [
 		{
-			"Name": "kickimmune",
-			"DefaultValue": "example name here" // add names here seperated by ,
+			"Name": "KickImmune",
+			"DefaultValue": "examplePlayer1,examplePlayer2" // add names here seperated by ,
 		}
 	],
 	"Scripts": [
