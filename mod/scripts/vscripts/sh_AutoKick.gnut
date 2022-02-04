@@ -1,6 +1,7 @@
 global function Autokick_Init
 void function Autokick_Init() {
 	//AddPrivateMatchModeSettingEnum("#MODE_SETTING_CATEGORY_SERVERTOOLS", "AutoKick", ["#SETTING_DISABLED", "#SETTING_ENABLED"], "0")
+	AddPrivateMatchModeSettingArbitrary("#MODE_SETTING_CATEGORY_SERVERTOOLS", "AutoKick", "0")
 	Antikick()
 	#if SERVER
 		AddCallback_GameStateEnter( eGameState.Playing, onstart );
